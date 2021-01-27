@@ -26,5 +26,8 @@
     "npm-run-all": "^4.1.5",
     "prompts": "^2.4.0"
   },
-  "devDependencies": {}
+  "devDependencies": {},
+  "bin": {
+    "create-node": "node ./scripts/init.js"
+  }
 }
