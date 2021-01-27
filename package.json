@@ -1,0 +1,30 @@
+{
+  "name": "create-node-template",
+  "version": "0.1.0",
+  "description": "Node initializer project that sets up blank starter repos.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/state-less/create-node.git"
+  },
+  "keywords": [
+    "initializer"
+  ],
+  "author": "moritz.roessler@gmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/state-less/create-node/issues"
+  },
+  "homepage": "https://github.com/state-less/create-node#readme",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "jest": "^26.6.3",
+    "l0g": "github:C5H8NNaO4/l0g#dev",
+    "npm-run-all": "^4.1.5",
+    "prompts": "^2.4.0"
+  },
+  "devDependencies": {}
+}
