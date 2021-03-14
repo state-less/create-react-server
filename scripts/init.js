@@ -114,6 +114,6 @@ const addRemote = async (org, name) => {
 
     await addRemote(fullRepo);
 
-    await exec('npm run bat:init');
+    await exec('cd scripts && init.bat');
     // console.log (dirname())
 })();
