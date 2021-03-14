@@ -28,6 +28,6 @@
   },
   "devDependencies": {},
   "bin": {
-    "create-react-server": "node ./scripts/init.js"
+    "create-react-server": "./scripts/init.js"
   }
 }
