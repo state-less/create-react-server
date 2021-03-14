@@ -6,6 +6,7 @@ const path = require('path');
 const exec = util.promisify(require('child_process').exec);
 const { spawn } = require('promisify-child-process');
 const logger = require('../src/lib/logger');
+const { renameSync, readFileSync, unlinkSync, writeFileSync } = require('fs');
 
 const dir = () => path.resolve('.');
 const dirname = () => path.basename(dir());
