@@ -113,7 +113,7 @@ const addRemote = async (org, name) => {
     logger.info`Adding remote.`;
 
     await addRemote(fullRepo);
-
-    await exec('init.bat', {cwd: dir(), stdio: 'inherit' });
+    console.log (dir())
+    await spawn('init.bat', {cwd: dir(), stdio: 'inherit' });
     // console.log (dirname())
 })();
