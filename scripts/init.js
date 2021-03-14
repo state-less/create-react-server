@@ -110,10 +110,28 @@ const addRemote = async (org, name) => {
     } catch (e) {
         logger.error`Error creating repository ${repo}: ${e}`;
     }
-    logger.info`Adding remote.`;
 
+    logger.info`Adding remote repository url '${fullRepo}'.`;
     await addRemote(fullRepo);
-    console.log (dir())
-    await spawn('init.bat', {cwd: dir(), stdio: 'inherit' });
+
+    logger.info`Creating environment file from template.`
+    renameSync('./.env.template', './.env');
+    try {
+        logger.warning`Deleting 'README.md'.`
+        unlinkSync('./README.md');
+    } catch (e) {
+
+    }
+
+    logger.info`Renaming 'BLANK_README.md' => 'README.md'`
+    renameSync('./BLANK_README.md', './README.md');
+
+    
+    let text = readFileSync('./README.md');
+    text = text.toString().replace(/repo_name/g, repo)
+    text = text.toString().replace(/repo_org/g, selectedOrg)
+
+    logger.info`Populating placeholders in 'README.md'`
+    writeFileSync('./README.md', text);
     // console.log (dirname())
 })();
