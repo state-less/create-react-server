@@ -11,11 +11,22 @@ const dir = () => path.resolve('.');
 const dirname = () => path.basename(dir());
 
 const getRepos = async () => {
-    const { stdout, stderr } = await exec('gh api /user/orgs');
+    let { stdout, stderr } = await exec('gh api /user');
+    let user; 
+
+    if (stderr) throw new Error(stderr);
+    try {
+        user = JSON.parse(stdout);
+    } catch (e) {
+        throw e;
+    }
+
+    ({ stdout, stderr } = await exec('gh api /user/orgs'));
+
     if (stderr) throw new Error(stderr);
     try {
         const orgs = JSON.parse(stdout);
-        return orgs;
+        return [user, ...orgs];
     } catch (e) {
         throw e;
     }
@@ -47,12 +58,19 @@ const addRemote = async (org, name) => {
 }
 
 (async () => {
-    const { selectOrg } = await prompts({
+    logger.info`Initializing git repository.`;
+
+    const { selectOrg } = await prompts([{
         type: 'confirm',
+        name: 'createRepo',
+        message: 'Do you want to create a repository on github?',
+        initial: true,
+    },{
+        type: prev => prev === true ? 'confirm' : null,
         name: 'selectOrg',
         message: 'Do you want to choose a organization?',
         initial: false
-    });
+    }]);
 
 
     let selectedOrg = '', repos = [];
@@ -96,6 +114,6 @@ const addRemote = async (org, name) => {
 
     await addRemote(fullRepo);
 
-    await exec('init.bat');
+    await exec('npm run bat:init');
     // console.log (dirname())
 })();

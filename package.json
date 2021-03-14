@@ -4,7 +4,8 @@
   "description": "Node initializer project that sets up blank starter repos.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "bat:init": "cd scripts && init.bat"
   },
   "repository": {
     "type": "git",
