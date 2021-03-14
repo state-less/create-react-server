@@ -48,7 +48,7 @@ const addRemote = async (org, name) => {
     } catch (e) {
     }
     try {
-        await spawn('git', ['remote', 'add', 'template', `git@github.com:state-less/create-node.git`], {cwd: dir(), stdio: 'inherit' });
+        await spawn('git', ['remote', 'add', 'template', `git@github.com:state-less/create-react-server.git`], {cwd: dir(), stdio: 'inherit' });
     } catch (e) {
 
     }
