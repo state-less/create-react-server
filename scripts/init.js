@@ -12,50 +12,56 @@ const dir = () => path.resolve('.');
 const dirname = () => path.basename(dir());
 
 const getRepos = async () => {
-    let { stdout, stderr } = await exec('gh api /user');
-    let user; 
-
-    if (stderr) throw new Error(stderr);
     try {
-        user = JSON.parse(stdout);
-    } catch (e) {
-        throw e;
-    }
 
-    ({ stdout, stderr } = await exec('gh api /user/orgs'));
+        let { stdout, stderr } = await exec('gh api /user');
+        let user;
 
-    if (stderr) throw new Error(stderr);
-    try {
-        const orgs = JSON.parse(stdout);
-        return [user, ...orgs];
+        if (stderr) throw new Error(stderr);
+        try {
+            user = JSON.parse(stdout);
+        } catch (e) {
+            throw e;
+        }
+
+        ({ stdout, stderr } = await exec('gh api /user/orgs'));
+
+        if (stderr) throw new Error(stderr);
+        try {
+            const orgs = JSON.parse(stdout);
+            return [user, ...orgs];
+        } catch (e) {
+            throw e;
+        }
     } catch (e) {
+        logger.error`It appears you don't have 'gh' installed. Please install 'gh' (choco install gh). \n ${e}`
         throw e;
     }
 }
 
 const makeRepo = async (name) => {
     logger.info`Creating repository ${name} in ${dir()}`;
-    return spawn('gh', ['repo', 'create', name], { cwd: dir(), stdio: 'inherit' });;
+    return spawn('gh', ['repo', 'create', '-y'], { cwd: dir(), stdio: 'inherit' });;
 }
 
 const cloneRepo = async (name) => {
-    return spawn('gh', ['repo', 'clone', name, '.'], {cwd: dir(), stdio: 'inherit' });
+    return spawn('gh', ['repo', 'clone', name, '.'], { cwd: dir(), stdio: 'inherit' });
 }
 
 const addRemote = async (org, name) => {
     try {
-        await spawn('git', ['remote', 'remove', 'origin'], {cwd: dir(), stdio: 'inherit' });
+        await spawn('git', ['remote', 'remove', 'origin'], { cwd: dir(), stdio: 'inherit' });
     } catch (e) {
     }
     try {
-        await spawn('git', ['remote', 'add', 'template', `git@github.com:state-less/create-react-server.git`], {cwd: dir(), stdio: 'inherit' });
+        await spawn('git', ['remote', 'add', 'template', `git@github.com:state-less/create-react-server.git`], { cwd: dir(), stdio: 'inherit' });
     } catch (e) {
 
     }
-    await spawn('git', ['remote', 'add', 'origin', `git@github.com:${name}.git`], {cwd: dir(), stdio: 'inherit' });
-    await spawn('git', ['fetch', 'template'], {cwd: dir(), stdio: 'inherit' });
-    await spawn('git', ['reset', '--hard', 'template/template'], {cwd: dir(), stdio: 'inherit' });
-    return true;     
+    await spawn('git', ['remote', 'add', 'origin', `git@github.com:${name}.git`], { cwd: dir(), stdio: 'inherit' });
+    await spawn('git', ['fetch', 'template'], { cwd: dir(), stdio: 'inherit' });
+    await spawn('git', ['reset', '--hard', 'template/template'], { cwd: dir(), stdio: 'inherit' });
+    return true;
 }
 
 (async () => {
@@ -66,7 +72,7 @@ const addRemote = async (org, name) => {
         name: 'createRepo',
         message: 'Do you want to create a repository on github?',
         initial: true,
-    },{
+    }, {
         type: prev => prev === true ? 'confirm' : null,
         name: 'selectOrg',
         message: 'Do you want to choose a organization?',
@@ -76,7 +82,11 @@ const addRemote = async (org, name) => {
 
     let selectedOrg = '', repos = [];
     if (selectOrg) {
-        repos = await getRepos();
+        try {
+            repos = await getRepos();
+        } catch (e) {
+            process.exit(1);
+        }
         const choices = repos.map(({ login, description }) => ({ title: login, description }));
 
         const { organization } = await prompts({
@@ -103,7 +113,7 @@ const addRemote = async (org, name) => {
     } catch (e) {
         // process.exit(1);
         logger.error`Error creating repository ${repo}: ${e}`;
-        
+
     }
     try {
         logger.info`Cloning repository ${fullRepo}`;
@@ -112,8 +122,13 @@ const addRemote = async (org, name) => {
         logger.error`Error creating repository ${repo}: ${e}`;
     }
 
-    logger.info`Adding remote repository url '${fullRepo}'.`;
-    await addRemote(fullRepo);
+    try {
+        logger.info`Adding remote repository url '${fullRepo}'.`;
+        await addRemote(fullRepo);
+    } catch (e) {
+        logger.error`Error adding remote repository ${repo}: ${e}`;
+
+    }
 
     logger.info`Creating environment file from template.`
     renameSync('./.env.template', './.env');
@@ -127,7 +142,7 @@ const addRemote = async (org, name) => {
     logger.info`Renaming 'BLANK_README.md' => 'README.md'`
     renameSync('./BLANK_README.md', './README.md');
 
-    
+
     let text = readFileSync('./README.md');
     text = text.toString().replace(/repo_name/g, repo)
     text = text.toString().replace(/repo_org/g, selectedOrg)
