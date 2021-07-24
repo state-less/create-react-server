@@ -39,16 +39,25 @@ const getRepos = async () => {
     }
 }
 
-const makeRepo = async (name) => {
+const initRepo = async () => {
     logger.info`Creating repository ${name} in ${dir()}`;
-    return spawn('gh', ['repo', 'create', '-y'], { cwd: dir(), stdio: 'inherit' });;
+    try {
+        await spawn('git', ['init']);
+    } catch (e) {
+        logger.error`Error initializing repository`;
+    }
+}
+
+const makeRepo = async (name) => {
+
+    return spawn('gh', ['repo', 'create', name, '-y'], { cwd: dir(), stdio: 'inherit' });;
 }
 
 const cloneRepo = async (name) => {
     return spawn('gh', ['repo', 'clone', name, '.'], { cwd: dir(), stdio: 'inherit' });
 }
 
-const addRemote = async (org, name) => {
+const addTemplate = async (org, name) => {
     try {
         await spawn('git', ['remote', 'remove', 'origin'], { cwd: dir(), stdio: 'inherit' });
     } catch (e) {
@@ -58,9 +67,12 @@ const addRemote = async (org, name) => {
     } catch (e) {
 
     }
-    await spawn('git', ['remote', 'add', 'origin', `git@github.com:${name}.git`], { cwd: dir(), stdio: 'inherit' });
     await spawn('git', ['fetch', 'template'], { cwd: dir(), stdio: 'inherit' });
     await spawn('git', ['reset', '--hard', 'template/template'], { cwd: dir(), stdio: 'inherit' });
+}
+const addRemote = async (name) => {
+
+    await spawn('git', ['remote', 'add', 'origin', `git@github.com:${name}.git`], { cwd: dir(), stdio: 'inherit' });
     return true;
 }
 
@@ -98,37 +110,43 @@ const addRemote = async (org, name) => {
         });
 
         selectedOrg = organization;
+
+        const { repo } = await prompts({
+            type: 'text',
+            name: 'repo',
+            message: 'Choose a repository name',
+            initial: dirname()
+        });
+
+        const fullRepo = `${repos[selectedOrg].login}/${repo}`
+        try {
+            await makeRepo(fullRepo);
+        } catch (e) {
+            // process.exit(1);
+            logger.error`Error creating repository ${repo}: ${e}`;
+
+        }
+
+        try {
+            logger.info`Adding remote repository url '${fullRepo}'.`;
+            await addTemplate();
+            await addRemote(fullRepo);
+        } catch (e) {
+            logger.error`Error adding remote repository ${repo}: ${e}`;
+    
+        }
+    } else {
+        await initRepo();
+        await addTemplate();
     }
+    // try {
+    //     logger.info`Cloning repository ${fullRepo}`;
+    //     await cloneRepo(fullRepo);
+    // } catch (e) {
+    //     logger.error`Error creating repository ${repo}: ${e}`;
+    // }
 
-    const { repo } = await prompts({
-        type: 'text',
-        name: 'repo',
-        message: 'Choose a repository name',
-        initial: dirname()
-    });
 
-    const fullRepo = `${repos[selectedOrg].login}/${repo}`
-    try {
-        await makeRepo(fullRepo);
-    } catch (e) {
-        // process.exit(1);
-        logger.error`Error creating repository ${repo}: ${e}`;
-
-    }
-    try {
-        logger.info`Cloning repository ${fullRepo}`;
-        await cloneRepo(fullRepo);
-    } catch (e) {
-        logger.error`Error creating repository ${repo}: ${e}`;
-    }
-
-    try {
-        logger.info`Adding remote repository url '${fullRepo}'.`;
-        await addRemote(fullRepo);
-    } catch (e) {
-        logger.error`Error adding remote repository ${repo}: ${e}`;
-
-    }
 
     logger.info`Creating environment file from template.`
     renameSync('./.env.template', './.env');
