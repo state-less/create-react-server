@@ -40,7 +40,7 @@ const getRepos = async () => {
 }
 
 const initRepo = async () => {
-    logger.info`Creating repository ${name} in ${dir()}`;
+    logger.info`Initializing repository`;
     try {
         await spawn('git', ['init']);
     } catch (e) {
