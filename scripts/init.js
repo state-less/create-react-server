@@ -79,7 +79,7 @@ const addRemote = async (name) => {
 (async () => {
     logger.info`Initializing git repository.`;
 
-    const { selectOrg } = await prompts([{
+    const { selectOrg, createRepo } = await prompts([{
         type: 'confirm',
         name: 'createRepo',
         message: 'Do you want to create a repository on github?',
@@ -161,11 +161,20 @@ const addRemote = async (name) => {
     renameSync('./BLANK_README.md', './README.md');
 
 
-    let text = readFileSync('./README.md');
-    text = text.toString().replace(/repo_name/g, repo)
-    text = text.toString().replace(/repo_org/g, selectedOrg)
+    if (createRepo || selectOrg) {
 
-    logger.info`Populating placeholders in 'README.md'`
-    writeFileSync('./README.md', text);
-    // console.log (dirname())
+        let text = readFileSync('./README.md');
+        
+        if (createRepo) 
+        text = text.toString().replace(/repo_name/g, repo)
+        if (selectOrg)
+        text = text.toString().replace(/repo_org/g, selectedOrg)
+        
+        logger.info`Populating placeholders in 'README.md'`
+        writeFileSync('./README.md', text);
+    }
+    
+    logger.info`Project initialized.`
+    logger.info`cd server && npm i`
+
 })();
