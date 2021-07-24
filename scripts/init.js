@@ -76,6 +76,7 @@ const addRemote = async (name) => {
     return true;
 }
 
+let selectedRepo = dirname();
 (async () => {
     logger.info`Initializing git repository.`;
 
@@ -117,6 +118,7 @@ const addRemote = async (name) => {
             message: 'Choose a repository name',
             initial: dirname()
         });
+        selectedRepo = repo;
 
         const fullRepo = `${repos[selectedOrg].login}/${repo}`
         try {
@@ -174,6 +176,11 @@ const addRemote = async (name) => {
         writeFileSync('./README.md', text);
     }
     
+    logger.info`Updating name in package.json`;
+    const packageJSON = readFileSync('./package.json');
+    const json = JSON.parse(packageJSON);
+    json.name = selectedRepo;
+    writeFileSync('./package.json', JSON.stringify(json));
     logger.info`Project initialized.`
     logger.info`cd server && npm i`
 
