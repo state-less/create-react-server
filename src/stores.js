@@ -46,9 +46,10 @@ const sqlStore = store.scope("public", {
 //   TableName: TABLE_NAME,
 // });
 
+
 export {
   store,
-  publicStore: sqlStore,
+  sqlStore as publicStore,
   memoryStore,
   subscriptionStore,
   sqlStore,
