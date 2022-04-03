@@ -1,3 +1,5 @@
+//@ts-nocheck
+
 import { Component } from 'react-server/release/server/component';
 import { ClientComponent, Action } from 'react-server/release/components';
 import { publicStore } from '../stores';
@@ -22,7 +24,7 @@ const Poll = async (props, clientProps, socket) => {
     scope: getId(jwt) || ip || 'anonymous',
   });
 
-  const vote = async ({ socket }, option) => {
+  const vote = async (_conn, option: number) => {
     if (!values[option]) {
       throw new Error(`Unsupported value. Supported values are ${values}`);
     }

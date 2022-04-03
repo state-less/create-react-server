@@ -1,4 +1,5 @@
 import { WebSocketRenderer, Server, Router, Route } from 'react-server';
+import { StoreProvider } from 'react-server/release/components';
 import { Poll } from './components/Poll';
 import { PORT } from './config';
 
@@ -15,9 +16,11 @@ const Target = (props) => {
 };
 
 const prod = (
-  <Server>
-    <Poll store={store} values={['foo', 'bar']} key="poll" />
-  </Server>
+  <StoreProvider store={publicStore}>
+    <Server>
+      <Poll store={store} values={['foo', 'bar']} key="demo-poll" />
+    </Server>
+  </StoreProvider>
 );
 
 const router = (
