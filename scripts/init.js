@@ -16,6 +16,8 @@ const {
 } = require("fs");
 const commandExists = require("command-exists");
 
+console.log(process.argv);
+
 const dir = () => path.resolve(".");
 const dirname = () => path.basename(dir());
 
