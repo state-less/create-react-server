@@ -26,7 +26,11 @@ if (!name) {
 const dir = () => path.resolve(`./${name}`);
 const dirname = () => path.basename(dir());
 
-logger.info`Creating new project in folder '${dir}'`
+if (!fs.existsSync(dir())) {
+  fs.mkdirSync(dir());
+}
+
+logger.info`Creating new project in folder '${dir()}'`
 const getRepos = async () => {
   try {
     let { stdout, stderr } = await exec("gh api /user");
