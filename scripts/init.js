@@ -249,7 +249,7 @@ let selectedRepo = baseName();
 
     
     updatePackage();
-    logger.info`Project initialized. You can install dependencies now.`;
+    logger.info`Project initialized. Installing dependencies.`;
     
     console.log ("dir");
     await spawn(
@@ -257,6 +257,25 @@ let selectedRepo = baseName();
       ["install"],
       { cwd: dir(), stdio: "inherit", shell: true }
     );
+
+    logger.info`Dependencies installed. You can start the server now.`
+    logger.info`
+Success! Created backend at ${dir()}
+Inside that directory, you can run several commands:
+
+  npm start
+    Starts the development server.
+
+  npm run build
+    Builds the app..
+
+We suggest that you begin by typing:
+
+  cd frontend
+  npm start
+
+Happy hacking!
+`
 
   } catch (e) {
     logger.error`Error ${e} in main procedure.`;
