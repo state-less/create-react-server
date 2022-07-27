@@ -13,12 +13,13 @@ const {
   writeFileSync,
   fstat,
   existsSync,
+  mkdirSync
 } = require("fs");
 const commandExists = require("command-exists");
 
-console.log(process.argv);
 
-const dir = () => path.resolve(".");
+const [,, installDir] = process.argv;
+const dir = () => path.resolve(`./${installDir}`);
 const dirname = () => path.basename(dir());
 
 const getRepos = async () => {
@@ -136,6 +137,7 @@ let selectedRepo = dirname();
     repos;
 
   try {
+    mkdirSync(dirname);
     const features = await detectFeatures();
     if (!features.gh) {
       logger.warning`'gh' is not installed. Skipping repo creation.`;

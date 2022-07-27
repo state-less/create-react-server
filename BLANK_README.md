@@ -7,7 +7,7 @@
 ***
 ***
 *** To avoid retyping too much info. Do a search and replace for the following:
-*** @spoo-technologies, repo_name, twitter_handle, repo_maintainer, project_title, project_description
+*** state-less, create-react-server, statelesscloud, state-less, React Server Initializer, Initializes a new Leap project.
 -->
 
 
@@ -32,23 +32,23 @@
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
-  <a href="https://github.com/@spoo-technologies/repo_name">
+  <a href="https://github.com/state-less/create-react-server">
       <img src="assets/images/logo.png" alt="Logo">
   </a>
 
-  <h3 align="center">project_title</h3>
+  <h3 align="center">React Server Initializer</h3>
 
   <p align="center">
-    project_description
+    Initializes a new Leap project.
     <br />
-    <a href="https://github.com/@spoo-technologies/repo_name"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/state-less/create-react-server"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/@spoo-technologies/repo_name">View Demo</a>
+    <a href="https://github.com/state-less/create-react-server">View Demo</a>
     ·
-    <a href="https://github.com/@spoo-technologies/repo_name/issues">Report Bug</a>
+    <a href="https://github.com/state-less/create-react-server/issues">Report Bug</a>
     ·
-    <a href="https://github.com/@spoo-technologies/repo_name/issues">Request Feature</a>
+    <a href="https://github.com/state-less/create-react-server/issues">Request Feature</a>
   </p>
 </p>
 
@@ -89,7 +89,7 @@
 
 Here's a blank template to get started:
 **To avoid retyping too much info. Do a search and replace with your text editor for the following:**
-`@spoo-technologies`, `repo_name`, `twitter_handle`, `repo_maintainer`, `project_title`, `project_description`
+`state-less`, `create-react-server`, `statelesscloud`, `state-less`, `React Server Initializer`, `Initializes a new Leap project.`
 
 
 ### Built With
@@ -117,7 +117,7 @@ This is an example of how to list things you need to use the software and how to
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/@spoo-technologies/repo_name.git
+   git clone https://github.com/state-less/create-react-server.git
    ```
 2. Install NPM packages
    ```sh
@@ -138,7 +138,7 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 <!-- ROADMAP -->
 ## Roadmap
 
-See the [open issues](https://github.com/@spoo-technologies/repo_name/issues) for a list of proposed features (and known issues).
+See the [open issues](https://github.com/state-less/create-react-server/issues) for a list of proposed features (and known issues).
 
 
 
@@ -165,9 +165,9 @@ Distributed under the MIT License. See `LICENSE` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Your Name - [@twitter_handle](https://twitter.com/twitter_handle) - repo_maintainer
+Your Name - [@statelesscloud](https://twitter.com/statelesscloud) - state-less
 
-Project Link: [https://github.com/@spoo-technologies/repo_name](https://github.com/@spoo-technologies/repo_name)
+Project Link: [https://github.com/state-less/create-react-server](https://github.com/state-less/create-react-server)
 
 
 
@@ -184,15 +184,15 @@ Project Link: [https://github.com/@spoo-technologies/repo_name](https://github.c
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/@spoo-technologies/repo.svg?style=for-the-badge
-[contributors-url]: https://github.com/@spoo-technologies/repo/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/@spoo-technologies/repo.svg?style=for-the-badge
-[forks-url]: https://github.com/@spoo-technologies/repo/network/members
-[stars-shield]: https://img.shields.io/github/stars/@spoo-technologies/repo.svg?style=for-the-badge
-[stars-url]: https://github.com/@spoo-technologies/repo/stargazers
-[issues-shield]: https://img.shields.io/github/issues/@spoo-technologies/repo.svg?style=for-the-badge
-[issues-url]: https://github.com/@spoo-technologies/repo/issues
-[license-shield]: https://img.shields.io/github/license/@spoo-technologies/repo.svg?style=for-the-badge
-[license-url]: https://github.com/@spoo-technologies/repo/blob/master/LICENSE.txt
+[contributors-shield]: https://img.shields.io/github/contributors/state-less/repo.svg?style=for-the-badge
+[contributors-url]: https://github.com/state-less/repo/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/state-less/repo.svg?style=for-the-badge
+[forks-url]: https://github.com/state-less/repo/network/members
+[stars-shield]: https://img.shields.io/github/stars/state-less/repo.svg?style=for-the-badge
+[stars-url]: https://github.com/state-less/repo/stargazers
+[issues-shield]: https://img.shields.io/github/issues/state-less/repo.svg?style=for-the-badge
+[issues-url]: https://github.com/state-less/repo/issues
+[license-shield]: https://img.shields.io/github/license/state-less/repo.svg?style=for-the-badge
+[license-url]: https://github.com/state-less/repo/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/@spoo-technologies
+[linkedin-url]: https://linkedin.com/in/state-less
