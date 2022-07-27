@@ -13,6 +13,7 @@ const {
   writeFileSync,
   fstat,
   existsSync,
+  mkdirSync
 } = require("fs");
 const commandExists = require("command-exists");
 
@@ -26,11 +27,12 @@ if (!name) {
 const dir = () => path.resolve(`./${name}`);
 const dirname = () => path.basename(dir());
 
-if (!fs.existsSync(dir())) {
-  fs.mkdirSync(dir());
+if (!existsSync(dir())) {
+  mkdirSync(dir());
 }
 
 logger.info`Creating new project in folder '${dir()}'`
+
 const getRepos = async () => {
   try {
     let { stdout, stderr } = await exec("gh api /user");
