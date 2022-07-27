@@ -16,7 +16,14 @@ const {
 } = require("fs");
 const commandExists = require("command-exists");
 
-const dir = () => path.resolve(".");
+const name = process.argv[2];
+
+if (!name) {
+  logger.error`No foldername was provided`
+  process.exit(0);
+}
+
+const dir = () => path.resolve(`./${name}`);
 const dirname = () => path.basename(dir());
 
 const getRepos = async () => {
