@@ -25,7 +25,7 @@ if (!name) {
 }
 
 const dir = () => path.resolve(`./${name}`);
-const dirname = () => path.basename(dir());
+const baseName = () => path.basename(dir());
 
 if (!existsSync(dir())) {
   mkdirSync(dir());
@@ -63,7 +63,10 @@ const getRepos = async () => {
 const initRepo = async () => {
   logger.info`Initializing repository`;
   try {
-    await spawn("git", ["init"]);
+    await spawn("git", ["init"], {
+      cwd: dir(),
+      stdio: "inherit",
+    });
   } catch (e) {
     logger.error`Error initializing repository`;
   }
@@ -141,7 +144,7 @@ const detectFeatures = async () => {
   return result;
 };
 
-let selectedRepo = dirname();
+let selectedRepo = baseName();
 (async () => {
   logger.info`Initializing git repository.`;
   let selectedOrg = "",
@@ -193,7 +196,7 @@ let selectedRepo = dirname();
         type: "text",
         name: "repo",
         message: "Choose a repository name",
-        initial: dirname(),
+        initial: baseName(),
       });
       selectedRepo = repo;
 
@@ -225,36 +228,50 @@ let selectedRepo = dirname();
     // }
 
     logger.info`Creating environment file from template.`;
-    if (existsSync("./.env.template")) rename("./.env.template", "./.env");
+    if (existsSync(`${dir()}/.env.template`)) rename(`${dir()}/.env.template`, `${dir()}/.env`);
     try {
       logger.warning`Deleting 'README.md'.`;
-      unlinkSync("./README.md");
+      unlinkSync(`${dir()}/README.md`);
     } catch (e) {}
 
-    if (existsSync("./BLANK_README.md"))
-      rename("./BLANK_README.md", "./README.md");
+    if (existsSync(`${dir()}/BLANK_README.md`))
+      rename(`${dir()}/BLANK_README.md`, `${dir()}/README.md`);
 
     if (createRepo || selectOrg) {
-      let text = readFileSync("./README.md");
+      let text = readFileSync(`${dir()}/README.md`);
 
       if (createRepo) text = text.toString().replace(/repo_name/g, repo);
       if (selectOrg) text = text.toString().replace(/repo_org/g, selectedOrg);
 
       logger.info`Populating placeholders in 'README.md'`;
-      writeFileSync("./README.md", text);
+      writeFileSync(`${dir()}/README.md`, text);
     }
 
-    logger.info`Updating name in package.json`;
-    const packageJSON = readFileSync("./package.json");
-    const json = JSON.parse(packageJSON);
-    json.name = selectedRepo;
-    writeFileSync("./package.json", JSON.stringify(json));
-    logger.info`Project initialized.`;
-    logger.info`npm i`;
+    
+    updatePackage();
+    logger.info`Project initialized. You can install dependencies now.`;
+    
+    console.log ("dir");
+    await spawn(
+      "npm",
+      ["install"],
+      { cwd: dir(), stdio: "inherit", shell: true }
+    );
+
   } catch (e) {
     logger.error`Error ${e} in main procedure.`;
   }
 })();
+
+const updatePackage = () => {
+  logger.info`Updating name in package.json`;
+  const packageJSON = readFileSync(`./${name}/package.json`);
+
+  const json = JSON.parse(packageJSON);
+  json.name = selectedRepo;
+
+  writeFileSync("./package.json", JSON.stringify(json));
+}
 
 const rename = (from, to) => {
   logger.info`Renaming '${from}' => '${to}'`;
