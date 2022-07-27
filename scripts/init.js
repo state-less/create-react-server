@@ -236,7 +236,7 @@ let selectedRepo = dirname();
     json.name = selectedRepo;
     writeFileSync("./package.json", JSON.stringify(json));
     logger.info`Project initialized.`;
-    logger.info`cd server && npm i`;
+    logger.info`npm i`;
   } catch (e) {
     logger.error`Error ${e} in main procedure.`;
   }
